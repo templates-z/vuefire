@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "default-project"
+  },
+  "targets": {
+    "default-project": {
+      "hosting": {
+        "main": [
+          "app-name"
+        ]
+      }
+    }
+  }
+}
