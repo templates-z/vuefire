@@ -131,7 +131,7 @@
       <div class="mt-6">
         <button
           type="button"
-          @click="signInWithGoogle"
+          @click="_signInWithGoogle"
           :disabled="authStore.loading"
           class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -154,6 +154,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/store/auth'
 import { useI18n } from 'vue-i18n'
+import { signInWithGoogle } from '@/services/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -216,11 +217,11 @@ const handleSubmit = async () => {
   }
 }
 
-const signInWithGoogle = async () => {
+const _signInWithGoogle = async () => {
   authStore.clearError()
   
   try {
-    await authStore.signInWithGoogle()
+    await signInWithGoogle()
     router.push('/dashboard')
   } catch (error) {
     console.error('Google sign-in failed:', error)

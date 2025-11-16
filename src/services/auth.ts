@@ -214,6 +214,7 @@ export async function signInWithGoogle(): Promise<User> {
 
     return user;
   } catch (error: any) {
+    console.error('Google sign-in failed:', error);
     throw new Error(getAuthErrorMessage(error.code));
   }
 }
