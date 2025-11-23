@@ -1,56 +1,31 @@
-// Collection System Exports
-import type { BaseDocument } from './BaseCollection'
-import { collectionManager, createServiceCollection, createUserCollection } from './CollectionManager'
+/**
+ * Simplified Collection System - Clean Exports
+ * Single, focused approach to Firestore + Pinia integration
+ */
 
-// Core collection classes
-export { default as BaseCollection } from './BaseCollection'
-export { default as AuthenticatedCollection, createAuthenticatedCollection, createUserOwnedCollection } from './AuthenticatedCollection'
-export { default as CollectionManager, collectionManager, createServiceCollection, createUserCollection, createSharedCollection } from './CollectionManager'
+// Main store factory
+export { createCollectionStore } from './createCollectionStore'
 
-// Store factories
-export { default as createCollectionStore } from './CollectionStore'
-export { default as createCollectionPiniaStore } from './PiniaCollectionStore'
+// Core Firestore service (for advanced use cases)
+export { FirestoreCollection } from './FirestoreCollection'
+
+// Utilities
+export { cache, auth, formatFirestoreError, createError } from './utils'
 
 // Type exports
 export type {
   BaseDocument,
+  UserDocument,
   QueryOptions,
+  QueryOperator,
+  WhereCondition,
+  OrderByConfig,
   PaginationOptions,
-  SubscriptionOptions,
-  DocumentSubscriptionOptions
-} from './BaseCollection'
-
-export type {
-  AuthenticatedDocument,
-  UserOwnedDocument,
-  SecurityRule,
-  AuthCollectionOptions
-} from './AuthenticatedCollection'
-
-export type {
-  CollectionConfig,
-  CacheMetrics
-} from './CollectionManager'
-
-export type {
+  CollectionStoreConfig,
   CollectionState,
-  CollectionStoreOptions,
   LoadOptions,
-  PaginateOptions
-} from './CollectionStore'
-
-export type {
-  StoreConfig,
-  StoreState
-} from './PiniaCollectionStore'
-
-// Utilities
-export {
-  createOptimizedCollection,
-  invalidateCollectionCache,
-  getCollectionMetrics,
-  optimizeCollections
-} from './CollectionManager'
-
-// Event System
-export * from './events'
+  CollectionEvent,
+  CollectionError,
+  CollectionErrorType,
+  CacheEntry
+} from './types'

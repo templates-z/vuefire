@@ -180,6 +180,12 @@ const navigationItems = computed(() => [
     current: route.path === '/dashboard/profile'
   },
   {
+    name: t('nav.services'),
+    href: '/dashboard/services',
+    icon: UsersIcon,
+    current: route.path === '/dashboard/services'
+  },
+  {
     name: 'I18n Demo',
     href: '/dashboard/i18n-demo',
     icon: LanguageIcon,

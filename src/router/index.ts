@@ -1,20 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { authReady, isAuthenticated } from '@/services/auth'
 
-// Layouts
-import AuthLayout from '@/layouts/AuthLayout.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
-// Auth Pages
-import LoginPage from '@/pages/auth/LoginPage.vue'
-import RegisterPage from '@/pages/auth/RegisterPage.vue'
-
-// Dashboard Pages
-import DashboardHome from '@/pages/dashboard/DashboardHome.vue'
-import UsersPage from '@/pages/dashboard/UsersPage.vue'
-import ProfilePage from '@/pages/dashboard/ProfilePage.vue'
-import SettingsPage from '@/pages/dashboard/SettingsPage.vue'
-import I18nDemo from '@/pages/dashboard/I18nDemo.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,7 +10,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/auth',
-    component: AuthLayout,
+    component:  import('@/layouts/AuthLayout.vue'),
     meta: { requiresGuest: true },
     children: [
       {
@@ -33,35 +20,47 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'login',
         name: 'Login',
-        component: LoginPage,
+        component:  import('@/pages/auth/LoginPage.vue'),
         meta: { title: 'Login' }
       },
       {
         path: 'register',
         name: 'Register',
-        component: RegisterPage,
+        component:  import('@/pages/auth/RegisterPage.vue'),
         meta: { title: 'Register' }
       }
     ]
   },
   {
     path: '/dashboard',
-    component: DashboardLayout,
+    component:  import('@/layouts/DashboardLayout.vue'),
     meta: { requiresAuth: true },
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: DashboardHome,
+        component:  import('@/pages/dashboard/DashboardHome.vue'),
         meta: { 
           title: 'Dashboard',
           breadcrumbs: [{ name: 'Dashboard', path: '/dashboard' }]
         }
       },
       {
+        path: 'services',
+        name: 'Services',
+        component:  import('@/pages/dashboard/ServicesPage.vue'),
+        meta: { 
+          title: 'Services',
+          breadcrumbs: [
+            { name: 'Dashboard', path: '/dashboard' },
+            { name: 'Services', path: '/dashboard/services' }
+          ]
+        }
+      },
+      {
         path: 'users',
         name: 'Users',
-        component: UsersPage,
+        component:  import('@/pages/dashboard/UsersPage.vue'),
         meta: { 
           title: 'Users',
           breadcrumbs: [
@@ -73,7 +72,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'profile',
         name: 'Profile',
-        component: ProfilePage,
+        component:  import('@/pages/dashboard/ProfilePage.vue'),
         meta: { 
           title: 'Profile',
           breadcrumbs: [
@@ -86,7 +85,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'settings',
         name: 'Settings',
-        component: SettingsPage,
+        component:  import('@/pages/dashboard/SettingsPage.vue') ,
         meta: { 
           title: 'Settings',
           breadcrumbs: [
@@ -98,7 +97,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'i18n-demo',
         name: 'I18nDemo',
-        component: I18nDemo,
+        component:  import('@/pages/dashboard/I18nDemo.vue'),
         meta: { 
           title: 'I18n Demo',
           breadcrumbs: [

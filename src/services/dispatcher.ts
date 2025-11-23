@@ -5,7 +5,7 @@ type Events = {
 const events: Events = {};
 
 function subscribe(event: string, callback: ( ...args: any )=>void ): void {
-    if (!events.hasOwnProperty(event)) {
+    if (!events[event]) {
         events[event] = [];
     }
     events[event].push(callback);
@@ -14,13 +14,13 @@ function subscribe(event: string, callback: ( ...args: any )=>void ): void {
 
 function unsubscribe(event: string, callback: ( ...args: any )=>void ): void {
     if (events.hasOwnProperty(event)) {
-        events[event] = events[event].filter(subscriber => subscriber !== callback);
+        events[event] = events[event]!.filter(subscriber => subscriber !== callback);
     }
 }
 function dispatch( event: string, ...args : any[] ): void{
     console.log('Dispatching event', event);
     if (events.hasOwnProperty(event)) {
-        events[event].forEach( callback  => callback( ...args ));
+        events[event]!.forEach( callback  => callback( ...args ));
     }
 }
 
