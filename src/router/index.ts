@@ -58,6 +58,18 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
+        path: 'demo-table',
+        name: 'DemoTable',
+        component:  import('@/pages/dashboard/DataTableDemo.vue'),
+        meta: { 
+          title: 'DemoTable',
+          breadcrumbs: [
+            { name: 'Dashboard', path: '/dashboard' },
+            { name: 'DemoTable', path: '/dashboard/demo-table' }
+          ]
+        }
+      },
+      {
         path: 'users',
         name: 'Users',
         component:  import('@/pages/dashboard/UsersPage.vue'),

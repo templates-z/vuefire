@@ -186,6 +186,12 @@ const navigationItems = computed(() => [
     current: route.path === '/dashboard/services'
   },
   {
+    name: t('nav.demotable'),
+    href: '/dashboard/demo-table',
+    icon: UsersIcon,
+    current: route.path === '/dashboard/demotable'
+  },
+  {
     name: 'I18n Demo',
     href: '/dashboard/i18n-demo',
     icon: LanguageIcon,
