@@ -76,52 +76,52 @@
 
     <!-- Main content -->
     <div 
-      class="transition-all duration-300 ease-in-out"
+      class="transition-all duration-300 ease-in-out flex flex-col h-screen"
       :class="[
-        themeStore.sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'
+      themeStore.sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'
       ]"
     >
       <!-- Top bar -->
       <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center space-x-4">
-            <!-- Mobile menu button -->
-            <button
-              @click="showMobileSidebar = true"
-              class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-            >
-              <Bars3Icon class="w-6 h-6" />
-            </button>
+      <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-4">
+        <!-- Mobile menu button -->
+        <button
+          @click="showMobileSidebar = true"
+          class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+        >
+          <Bars3Icon class="w-6 h-6" />
+        </button>
 
-            <!-- Breadcrumbs -->
-            <Breadcrumbs :items="breadcrumbs" />
-          </div>
-
-          <div class="flex items-center space-x-4">
-            <!-- Notifications -->
-            <button class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-              <BellIcon class="w-6 h-6" />
-            </button>
-
-            <!-- Language toggle -->
-            <LanguageToggle />
-
-            <!-- Theme toggle -->
-            <ThemeToggle />
-
-            <!-- User menu -->
-            <UserMenu />
-          </div>
+        <!-- Breadcrumbs -->
+        <Breadcrumbs :items="breadcrumbs" />
         </div>
+
+        <div class="flex items-center space-x-4">
+        <!-- Notifications -->
+        <button class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+          <BellIcon class="w-6 h-6" />
+        </button>
+
+        <!-- Language toggle -->
+        <LanguageToggle />
+
+        <!-- Theme toggle -->
+        <ThemeToggle />
+
+        <!-- User menu -->
+        <UserMenu />
+        </div>
+      </div>
       </header>
 
       <!-- Page content -->
-      <main class="flex-1">
-        <div class="py-6">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <RouterView />
-          </div>
+      <main class="flex-1 overflow-y-auto">
+      <div class="py-6 h-full">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <RouterView />
         </div>
+      </div>
       </main>
     </div>
   </div>

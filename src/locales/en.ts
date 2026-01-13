@@ -55,7 +55,9 @@ export default {
     profile: 'Profile',
     settings: 'Settings',
     logout: 'Logout',
-    notifications: 'Notifications'
+    notifications: 'Notifications',
+    services:'Services',
+    demotable: 'Demo Table'
   },
 
   // Authentication

@@ -1,11 +1,12 @@
 <template>
-  <div class="p-6">
+  <div class=" bg-white dark:bg-gray-800 min-h-full ">
     <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900">DataTable Demo</h1>
-      <p class="mt-2 text-sm text-gray-600">Testing the new DataTable component with Firestore collection</p>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">DataTable Demo</h1>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Testing the new DataTable component with Firestore collection</p>
     </div>
 
-    <DataTable
+    <div>
+      <DataTable
       store-id="demo-services"
       collection-name="services"
       title="Services"
@@ -20,9 +21,8 @@
       :authenticated="true"
       :user-owned="false"
       :realtime="false"
-      height="600px"
-      style="height: 600px;"
-    />
+    /> 
+  </div>
   </div>
 </template>
 

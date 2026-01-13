@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="top-app">
     <!-- Loading screen while auth is initializing -->
     <div v-if="!authStore.authReady" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div class="text-center">
@@ -11,9 +11,10 @@
     <!-- Main app content -->
     <RouterView v-else />
     
-    <!-- Debug component (remove in production) -->
-    <ThemeDebug v-if="showDebug && authStore.authReady" />
+    
   </div>
+  <!-- Debug component (remove in production) -->
+    <ThemeDebug v-if="showDebug && authStore.authReady" />
 </template>
 
 <script setup lang="ts">
