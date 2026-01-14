@@ -117,6 +117,18 @@ const routes: RouteRecordRaw[] = [
             { name: 'I18n Demo', path: '/dashboard/i18n-demo' }
           ]
         }
+      },
+      {
+        path: 'theme',
+        name: 'Theme',
+        component:  import('@/pages/dashboard/ThemePage.vue'),
+        meta: { 
+          title: 'Theme Customization',
+          breadcrumbs: [
+            { name: 'Dashboard', path: '/dashboard' },
+            { name: 'Theme', path: '/dashboard/theme' }
+          ]
+        }
       }
     ]
   },

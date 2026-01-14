@@ -4,10 +4,11 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
+  darkMode: 'class', // Modern class-based dark mode
   theme: {
     extend: {
       colors: {
+        // Using CSS variables for dynamic theming
         primary: {
           50: '#eef2ff',
           100: '#e0e7ff',
@@ -35,6 +36,7 @@ export default {
           950: '#030712',
         },
         success: {
+          DEFAULT: 'rgb(var(--color-success) / <alpha-value>)',
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
@@ -48,6 +50,7 @@ export default {
           950: '#052e16',
         },
         warning: {
+          DEFAULT: 'rgb(var(--color-warning) / <alpha-value>)',
           50: '#fffbeb',
           100: '#fef3c7',
           200: '#fde68a',
@@ -61,6 +64,7 @@ export default {
           950: '#451a03',
         },
         error: {
+          DEFAULT: 'rgb(var(--color-error) / <alpha-value>)',
           50: '#fef2f2',
           100: '#fee2e2',
           200: '#fecaca',
@@ -74,6 +78,7 @@ export default {
           950: '#450a0a',
         },
         info: {
+          DEFAULT: 'rgb(var(--color-info) / <alpha-value>)',
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',

@@ -1,13 +1,29 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
+import { 
+  type ThemeColors,
+  getTheme, 
+  getAllThemes,
+  applyThemeColors 
+} from '@/config/themes'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
+
+export interface CustomTheme {
+  id: string
+  name: string
+  description: string
+  colors: ThemeColors
+  isCustom: true
+}
 
 export const useThemeStore = defineStore('theme', () => {
   // State
   const mode = ref<ThemeMode>('system')
   const sidebarCollapsed = ref(false)
   const primaryColor = ref('indigo')
+  const activeThemeId = ref<string>('default')
+  const customThemes = ref<CustomTheme[]>([])
 
   // Getters
   const isDark = computed(() => {
@@ -17,11 +33,24 @@ export const useThemeStore = defineStore('theme', () => {
     return mode.value === 'dark'
   })
 
-  const currentTheme = computed(() => ({
+  const currentTheme = computed(() => {
+    const themeId = activeThemeId.value
+    const theme = getTheme(themeId)
+    if (theme) return theme
+    
+    return customThemes.value.find(t => t.id === themeId)
+  })
+
+  const availableThemes = computed(() => {
+    return [...getAllThemes(), ...customThemes.value]
+  })
+
+  const themeState = computed(() => ({
     mode: mode.value,
     isDark: isDark.value,
     sidebarCollapsed: sidebarCollapsed.value,
-    primaryColor: primaryColor.value
+    primaryColor: primaryColor.value,
+    activeTheme: currentTheme.value
   }))
 
   // Actions
@@ -59,6 +88,108 @@ export const useThemeStore = defineStore('theme', () => {
     updateCSSVariables()
   }
 
+  const setActiveTheme = (themeId: string) => {
+    activeThemeId.value = themeId
+    localStorage.setItem('active-theme', themeId)
+    applyCurrentThemeColors()
+  }
+
+  const loadCustomThemes = () => {
+    try {
+      const stored = localStorage.getItem('custom-themes')
+      if (stored) {
+        customThemes.value = JSON.parse(stored)
+      }
+    } catch (error) {
+      console.error('Failed to load custom themes:', error)
+    }
+  }
+
+  const saveCustomThemes = () => {
+    try {
+      localStorage.setItem('custom-themes', JSON.stringify(customThemes.value))
+    } catch (error) {
+      console.error('Failed to save custom themes:', error)
+    }
+  }
+
+  const createCustomTheme = (name: string, description: string, colors: ThemeColors): CustomTheme => {
+    const customTheme: CustomTheme = {
+      id: `custom-${Date.now()}`,
+      name,
+      description,
+      colors,
+      isCustom: true,
+    }
+    
+    customThemes.value.push(customTheme)
+    saveCustomThemes()
+    
+    return customTheme
+  }
+
+  const updateCustomTheme = (id: string, updates: Partial<Omit<CustomTheme, 'id' | 'isCustom'>>) => {
+    const index = customThemes.value.findIndex(t => t.id === id)
+    if (index !== -1) {
+      const existing = customThemes.value[index]!
+      customThemes.value[index] = { ...existing, ...updates } as CustomTheme
+      saveCustomThemes()
+      
+      if (activeThemeId.value === id) {
+        applyCurrentThemeColors()
+      }
+    }
+  }
+
+  const deleteCustomTheme = (id: string) => {
+    customThemes.value = customThemes.value.filter(t => t.id !== id)
+    saveCustomThemes()
+    
+    if (activeThemeId.value === id) {
+      setActiveTheme('default')
+    }
+  }
+
+  const exportTheme = () => {
+    const theme = currentTheme.value
+    if (!theme) return null
+    
+    return JSON.stringify(theme, null, 2)
+  }
+
+  const importTheme = (jsonString: string): boolean => {
+    try {
+      const theme = JSON.parse(jsonString) as CustomTheme
+      
+      if (!theme.name || !theme.colors) {
+        throw new Error('Invalid theme structure')
+      }
+      
+      const imported = createCustomTheme(theme.name, theme.description || '', theme.colors)
+      setActiveTheme(imported.id)
+      
+      return true
+    } catch (error) {
+      console.error('Failed to import theme:', error)
+      return false
+    }
+  }
+
+  const applyCurrentThemeColors = () => {
+    const theme = currentTheme.value
+    if (!theme) return
+    
+    if ('isCustom' in theme && theme.isCustom) {
+      // It's a custom theme - colors is ThemeColors
+      applyThemeColors(theme.colors)
+    } else if ('colors' in theme) {
+      // It's a preset theme - colors has light/dark variants
+      const themeColors = theme.colors as { light: ThemeColors; dark: ThemeColors }
+      const colors = isDark.value ? themeColors.dark : themeColors.light
+      applyThemeColors(colors)
+    }
+  }
+
   const updateHtmlClass = () => {
     const html = document.documentElement
     
@@ -68,8 +199,8 @@ export const useThemeStore = defineStore('theme', () => {
       html.classList.remove('dark')
     }
     
-    // Debug log
-    console.log(`Theme updated: mode=${mode.value}, isDark=${isDark.value}, htmlClass=${html.classList.contains('dark')}`)
+    // Apply current theme colors when dark mode changes
+    applyCurrentThemeColors()
   }
 
   const setupSystemListener = () => {
@@ -119,6 +250,7 @@ export const useThemeStore = defineStore('theme', () => {
     const savedMode = localStorage.getItem('theme-mode') as ThemeMode
     const savedSidebarCollapsed = localStorage.getItem('sidebar-collapsed')
     const savedPrimaryColor = localStorage.getItem('primary-color')
+    const savedThemeId = localStorage.getItem('active-theme')
 
     if (savedMode && ['light', 'dark', 'system'].includes(savedMode)) {
       mode.value = savedMode
@@ -132,28 +264,34 @@ export const useThemeStore = defineStore('theme', () => {
       primaryColor.value = savedPrimaryColor
     }
 
+    if (savedThemeId) {
+      activeThemeId.value = savedThemeId
+    }
+
+    // Load custom themes
+    loadCustomThemes()
+
     updateHtmlClass()
     updateCSSVariables()
+    applyCurrentThemeColors()
     setupSystemListener()
-    
-    console.log(`Theme initialized: mode=${mode.value}, systemPrefers=${window.matchMedia('(prefers-color-scheme: dark)').matches}`)
   }
 
   // Watch for changes
-  watch(mode, (newMode) => {
-    console.log(`Mode changed to: ${newMode}`)
+  watch(mode, () => {
     updateHtmlClass()
-    if (newMode === 'system') {
+    if (mode.value === 'system') {
       setupSystemListener()
     }
   })
   
-  watch(isDark, (newIsDark) => {
-    console.log(`isDark changed to: ${newIsDark}`)
+  watch(isDark, () => {
     updateHtmlClass()
   })
   
   watch(primaryColor, updateCSSVariables)
+  
+  watch(activeThemeId, applyCurrentThemeColors)
 
   // Initialize on store creation
   if (typeof window !== 'undefined') {
@@ -165,10 +303,14 @@ export const useThemeStore = defineStore('theme', () => {
     mode,
     sidebarCollapsed,
     primaryColor,
+    activeThemeId,
+    customThemes,
     
     // Getters
     isDark,
     currentTheme,
+    themeState,
+    availableThemes,
     
     // Actions
     setMode,
@@ -176,6 +318,12 @@ export const useThemeStore = defineStore('theme', () => {
     toggleSidebar,
     setSidebarCollapsed,
     setPrimaryColor,
+    setActiveTheme,
+    createCustomTheme,
+    updateCustomTheme,
+    deleteCustomTheme,
+    exportTheme,
+    importTheme,
     initializeTheme
   }
 })

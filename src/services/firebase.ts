@@ -60,3 +60,8 @@ async function initializeFirebase() {
   }
 }
 export { initializeFirebase, firebase };
+
+// Export convenient references
+export const db = firebase.db;
+export const auth = firebase.auth;
+export const storage = firebase.storage;

@@ -300,6 +300,16 @@ The built `dist/` directory can be deployed to any static hosting service like:-
 
 **Happy coding! 🚀**
 
+## 📚 Additional Documentation
+
+- [Theme Customization Guide](./THEME_CUSTOMIZATION_GUIDE.md) - Complete guide to theme system
+- [TailwindCSS Migration](./TAILWINDCSS_MIGRATION.md) - TailwindCSS setup and migration details
+- [Theme Quick Start](./THEME_QUICK_START.md) - Quick reference for theme features
+- [Firestore Rules](./FIRESTORE_RULES.md) - Security rules configuration
+- [User Management](./USERS_MANAGEMENT.md) - User management guide
+
+## 🤝 Contributing
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Commit your changes: `git commit -m 'Add amazing feature'`

@@ -4,6 +4,7 @@
 
 /* Custom CSS Variables for Theme System */
 :root {
+  /* Dynamic theme colors (can be changed via JS) */
   --color-primary: 99 102 241; /* indigo-500 */
   --color-primary-dark: 79 70 229; /* indigo-600 */
   --color-secondary: 107 114 128; /* gray-500 */
